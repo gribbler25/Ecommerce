@@ -13,6 +13,7 @@ if (process.env.JAWSDB_URL) {
     process.env.DB_PW,
     {
       host: "localhost",
+      port: 3306,
       dialect: "mysql",
       dialectOptions: {
         decimalNumbers: true,
