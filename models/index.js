@@ -1,16 +1,28 @@
 // import models
-const Product = require('./Product');
-const Category = require('./Category');
-const Tag = require('./Tag');
-const ProductTag = require('./ProductTag');
+const Product = require("./Product");
+const Category = require("./Category");
+const Tag = require("./Tag");
+const ProductTag = require("./ProductTag");
 
-// Products belongsTo Category
+Product.belongsTo(Category, {
+  foreignKey: "catagory_id",
+});
 
-// Categories have many Products
+Category.hasMany(Product, {
+  foregnKey: "catagory_id",
+});
 
-// Products belongToMany Tags (through ProductTag)
+Product.belongsToMany(Tag, {
+  through: "product_tag",
+  as: "tagged_product",
+  foreignKey: "product_id",
+});
 
-// Tags belongToMany Products (through ProductTag)
+Tag.belongsToMany(Product, {
+  through: "product_tag",
+  as: "tagged_product",
+  foregnKey: "tag_id",
+});
 
 module.exports = {
   Product,
