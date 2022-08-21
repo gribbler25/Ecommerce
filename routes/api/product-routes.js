@@ -14,12 +14,13 @@ router.get("/", (req, res) => {
         attributes: ["id", "category_name"],
       },
       {
-        model: Tag,
-        attributes: ["id", "tag_name"],
+        model: ProductTag,
+        attributes: ["id", "product_id", "tag_id"],
         include: [
           {
-            model: ProductTag,
+            model: Tag,
             attributes: ["id", "product_id", "tag_id"],
+            as: "tagged_product", //***alias here?? */
           },
         ],
       },
@@ -36,7 +37,7 @@ router.get("/", (req, res) => {
 router.get("/:id", (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
-  Category.findOne({
+  Product.findOne({
     where: {
       id: req.params.id,
     },
@@ -45,7 +46,7 @@ router.get("/:id", (req, res) => {
         model: Category,
         attributes: ["id", "category_name"],
         where: {
-          product_id: req.params.id,
+          id: req.params.category_id,
         },
       },
       {
@@ -54,6 +55,16 @@ router.get("/:id", (req, res) => {
         where: {
           product_id: req.params.id,
         },
+        include: [
+          {
+            model: Tag,
+            attributes: ["tag_name"],
+            as: "tagged_product",
+            where: {
+              id: ProductTag.tag_id,
+            },
+          },
+        ],
       },
     ],
   })
@@ -110,17 +121,16 @@ router.put("/:id", (req, res) => {
     where: {
       id: req.params.id,
     },
-  })
-    .then((product) => {
-      if (!product) {
-        //i added a 404 error statement.***
-        res.status(404).json({ message: "No product found with this id" });
-        return;
-      }
-      // })
-      // find all associated tags from ProductTag
-      return ProductTag.findAll({ where: { product_id: req.params.id } });
-    }) //i moved these brackets to place above statement inside the  '.then'**
+  }).then((product) => {
+    if (!product) {
+      //i added a 404 error statement.***
+      res.status(404).json({ message: "No product found with this id" });
+      return;
+    }
+  });
+  // find all associated tags from ProductTag
+  return ProductTag.findAll({ where: { product_id: req.params.id } })
+
     .then((productTags) => {
       // get list of current tag_ids
       const productTagIds = productTags.map(({ tag_id }) => tag_id);

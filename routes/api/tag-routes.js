@@ -9,13 +9,13 @@ router.get("/", (req, res) => {
   Tag.findAll({
     include: [
       {
-        model: Product,
-        attributes: ["id", "product_name", "price", "stock"],
+        model: ProductTag,
+        attributes: ["id", "product_id", "tag_id"],
         include: {
-          model: ProductTag,
-          attributes: ["id", "product_id", "tag_id"],
+          model: Product,
+          attributes: ["id", "product_name", "price", "stock"],
+          as: "tagged_product", //**do i need 'as' here??  */
         },
-        as: "tagged_product",
       },
     ],
   })
@@ -36,17 +36,19 @@ router.get("/:id", (req, res) => {
     include: [
       {
         model: ProductTag,
+        attributes: ["id", "product_id", "tag_id"],
         where: {
           tag_id: req.params.id,
         },
-        attributes: ["id", "product_id", "tag_id"],
         include: [
           {
             model: Product,
+            attributes: ["id", "product_name"],
+
             where: {
               id: ProductTag.product_id,
             },
-            attributes: ["id", "product_name", "price", "stock", "catagory_id"],
+            as: "tagged_product", //**do i need 'as' here??  */
           },
         ],
       },

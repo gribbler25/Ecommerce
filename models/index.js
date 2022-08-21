@@ -11,21 +11,21 @@ Product.belongsTo(Category, {
 
 Category.hasMany(Product, {
   //
-  foregnKey: "catagory_id",
+  foreignKey: "catagory_id",
 });
 
 Product.belongsToMany(Tag, {
-  //
-  through: ProductTag,
+  //  **these 2 associations are questionable....**
+  through: "product_tag",
   as: "tagged_product",
   foreignKey: "product_id",
 });
 
 Tag.belongsToMany(Product, {
   //
-  through: ProductTag,
+  through: "product_tag",
   as: "tagged_product",
-  foregnKey: "product_id",
+  foreignKey: "tag_id",
 });
 
 module.exports = {
