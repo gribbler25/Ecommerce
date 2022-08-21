@@ -9,13 +9,11 @@ router.get("/", (req, res) => {
   Tag.findAll({
     include: [
       {
-        model: ProductTag,
-        attributes: ["id", "product_id", "tag_id"],
-        include: {
-          model: Product,
-          attributes: ["id", "product_name", "price", "stock"],
-          as: "tagged_product", //**do i need 'as' here??  */
-        },
+        model: Product,
+        attributes: ["id", "product_name", "price", "stock"],
+        // attributes: ["id", "product_id", "tag_id"],
+        through: ProductTag,
+        as: "tagged_product", //**do i need 'as' here??  */
       },
     ],
   })

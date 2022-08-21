@@ -11,18 +11,13 @@ router.get("/", (req, res) => {
     include: [
       {
         model: Category,
-        attributes: ["id", "category_name"],
+        attributes: ["category_name"],
       },
       {
-        model: ProductTag,
-        attributes: ["id", "product_id", "tag_id"],
-        include: [
-          {
-            model: Tag,
-            attributes: ["id", "product_id", "tag_id"],
-            as: "tagged_product", //***alias here?? */
-          },
-        ],
+        model: Tag,
+        attributes: ["id", "tag_name"],
+        through: ProductTag,
+        as: "tagged_product",
       },
     ],
   })
@@ -83,12 +78,12 @@ router.get("/:id", (req, res) => {
 
 // create new product
 router.post("/", (req, res) => {
-  /* req.body should look like this...
+  /* req.body should look like this...//**what are these 'tags' for anyway??
     {
       product_name: "Basketball",
       price: 200.00,
       stock: 3,
-      tagIds: [1, 2, 3, 4] //**what are these 'tags' for anyway?? 
+      tagIds: [1, 2, 3, 4]  
     }
   */
 
