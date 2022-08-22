@@ -5,7 +5,7 @@
 This project allows a user to perform basic CRUD operations to view / create / update /delete Product, Category and Tag data in a sql database  
  </br>
 
-## Example video:
+## Example video: [screencastify](https://watch.screencastify.com/v/FgMUbTX5SiA03Gr4q1MN)
 
 ## Built With:
 

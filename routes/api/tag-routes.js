@@ -11,7 +11,6 @@ router.get("/", (req, res) => {
       {
         model: Product,
         attributes: ["id", "product_name", "price", "stock"],
-        // attributes: ["id", "product_id", "tag_id"],
         through: ProductTag,
         as: "tagged_product", //**do i need 'as' here??  */
       },
@@ -33,22 +32,10 @@ router.get("/:id", (req, res) => {
     },
     include: [
       {
-        model: ProductTag,
-        attributes: ["id", "product_id", "tag_id"],
-        where: {
-          tag_id: req.params.id,
-        },
-        include: [
-          {
-            model: Product,
-            attributes: ["id", "product_name"],
-
-            where: {
-              id: ProductTag.product_id,
-            },
-            as: "tagged_product", //**do i need 'as' here??  */
-          },
-        ],
+        model: Product,
+        attributes: ["id", "product_name", "price", "stock"],
+        through: ProductTag,
+        as: "tagged_product", //i need 'as' here??  */
       },
     ],
   })

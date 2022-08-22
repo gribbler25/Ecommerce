@@ -107,7 +107,7 @@ router.put("/:id", (req, res) => {
       return ProductTag.findAll({ where: { product_id: req.params.id } });
     })
     .then((productTags) => {
-      if (!req.body.tagIds) return productTags;
+      if (!req.body.tagIds) return productTags; //added conditional here
 
       // get list of current tag_ids
       const productTagIds = productTags.map(({ tag_id }) => tag_id);
